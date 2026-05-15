@@ -1,0 +1,55 @@
+name: Update Winget Manifest
+
+on:
+  repository_dispatch:
+    types: [bump-winget]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to bump to (e.g. 1.2.3). Leave empty to use latest release."
+        required: false
+        type: string
+
+jobs:
+  update:
+    name: Update Manifest
+    runs-on: windows-latest
+    steps:
+      - name: Resolve version
+        id: version
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "repository_dispatch" ]]; then
+            VERSION="${{ github.event.client_payload.version }}"
+          elif [[ -n "${{ inputs.version }}" ]]; then
+            VERSION="${{ inputs.version }}"
+          fi
+
+          if [[ -z "$VERSION" ]]; then
+            VERSION=$(gh release view --repo koepalex/Crow-s-Nest-MQTT --json tagName --jq '.tagName')
+          fi
+
+          echo "Resolved version: $VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Install wingetcreate
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri https://aka.ms/wingetcreate/latest -OutFile wingetcreate.exe
+
+      - name: Update manifest and submit PR
+        shell: pwsh
+        run: |
+          $version = "${{ steps.version.outputs.version }}"
+          $url = "https://github.com/koepalex/Crow-s-Nest-MQTT/releases/download/${version}/CrowsNestMqtt-${version}.msixbundle"
+
+          Write-Host "Updating koepalex.CrowsNestMQTT to version $version"
+          Write-Host "Installer URL: $url"
+
+          .\wingetcreate.exe update koepalex.CrowsNestMQTT `
+            --version $version `
+            --urls $url `
+            --submit `
+            --token ${{ secrets.WINGET_PKGS_TOKEN }}
