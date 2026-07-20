@@ -52,7 +52,7 @@ jobs:
           }
 
           $version = "${{ steps.version.outputs.version }}"
-          $url = "https://github.com/koepalex/Crow-s-Nest-MQTT/releases/download/${version}/CrowsNestMqtt-${version}.msixbundle"
+          $url = "https://github.com/koepalex/Crow-s-Nest-MQTT/releases/download/${version}/crows-nest-mqtt-win-x64-${version}.zip"
 
           Write-Host "Updating koepalex.CrowsNestMQTT to version $version"
           Write-Host "Installer URL: $url"
