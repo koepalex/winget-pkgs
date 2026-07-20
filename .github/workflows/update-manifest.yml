@@ -10,6 +10,9 @@ on:
         required: false
         type: string
 
+permissions:
+  contents: read
+
 jobs:
   update:
     name: Update Manifest
@@ -41,7 +44,13 @@ jobs:
 
       - name: Update manifest and submit PR
         shell: pwsh
+        env:
+          WINGET_CREATE_GITHUB_TOKEN: ${{ secrets.WINGET_CREATE_GITHUB_TOKEN }}
         run: |
+          if ([string]::IsNullOrWhiteSpace($env:WINGET_CREATE_GITHUB_TOKEN)) {
+            throw "The WINGET_CREATE_GITHUB_TOKEN Actions secret is not configured."
+          }
+
           $version = "${{ steps.version.outputs.version }}"
           $url = "https://github.com/koepalex/Crow-s-Nest-MQTT/releases/download/${version}/CrowsNestMqtt-${version}.msixbundle"
 
@@ -51,5 +60,4 @@ jobs:
           .\wingetcreate.exe update koepalex.CrowsNestMQTT `
             --version $version `
             --urls $url `
-            --submit `
-            --token ${{ secrets.WINGET_PKGS_TOKEN }}
+            --submit
