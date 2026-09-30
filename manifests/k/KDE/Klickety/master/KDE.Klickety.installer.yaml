@@ -6,17 +6,18 @@ PackageVersion: master
 InstallerType: nullsoft
 UpgradeBehavior: install
 ProductCode: klickety
+ReleaseDate: 2026-09-29
 Installers:
 - Architecture: x64
   Scope: user
-  InstallerUrl: https://cdn.kde.org/ci-builds/games/klickety/master/windows/klickety-master-976-windows-cl-msvc2022-x86_64.exe
-  InstallerSha256: E774F42CB9E23FAD761C844DAADB8BA56C4E9A5A3080F3FF30EDE95123A793FE
+  InstallerUrl: https://cdn.kde.org/ci-builds/games/klickety/master/windows/klickety-master-1013-windows-cl-msvc2022-x86_64.exe
+  InstallerSha256: 4606B5E4BE4CDC8A7C0C658379FECDB290863D052CCD69BEED19C537520062BD
   InstallerSwitches:
     Custom: /CurrentUser
 - Architecture: x64
   Scope: machine
-  InstallerUrl: https://cdn.kde.org/ci-builds/games/klickety/master/windows/klickety-master-976-windows-cl-msvc2022-x86_64.exe
-  InstallerSha256: E774F42CB9E23FAD761C844DAADB8BA56C4E9A5A3080F3FF30EDE95123A793FE
+  InstallerUrl: https://cdn.kde.org/ci-builds/games/klickety/master/windows/klickety-master-1013-windows-cl-msvc2022-x86_64.exe
+  InstallerSha256: 4606B5E4BE4CDC8A7C0C658379FECDB290863D052CCD69BEED19C537520062BD
   InstallerSwitches:
     Custom: /AllUsers
 ManifestType: installer
